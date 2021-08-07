@@ -1,0 +1,55 @@
+@media (max-width: 1199px) {
+	.payments > .payment-list {
+		grid-template-columns: repeat(4, calc(25% - (20px * 3 / 4)));
+	}
+
+	.payments > .payment-list > .payment-id:nth-child(n+5){
+		display: none !important;
+	}
+}
+
+@media (max-width: 991px) {
+	.payments > .payment-list {
+		grid-template-columns: repeat(3, calc((100% / 3) - (20px * 2 / 3)));
+	}
+
+	.payments > .payment-list > .payment-id:nth-child(n+4){
+		display: none !important;
+	}
+
+	.tabs-wrapper > .block-right {
+		height: 100%;
+	}
+
+	.tabs-wrapper > .block-right > .btn {
+		height: 100%;
+	}
+
+	body > .container > .tabs > .tabs-wrapper .tab-links > li > a:after {
+		background-size: 100% 17px;
+	}
+}
+
+@media (max-width: 679px) {
+	.payments > .payment-list {
+		grid-template-columns: repeat(2, calc(50% - (20px / 2)));
+	}
+
+	.payments > .payment-list > .payment-id:nth-child(n+3){
+		display: none !important;
+	}
+}
+
+@media (max-width: 479px) {
+	.tabs-wrapper {
+		grid-template-columns: 100%;
+	}
+
+	.payments > .payment-list {
+		grid-template-columns: 100%;
+	}
+
+	.payments > .payment-list > .payment-id:nth-child(n+2){
+		display: none !important;
+	}
+}

@@ -1,0 +1,207 @@
+var payments = {
+
+	last: 0,
+
+	pushLast: function(data){
+
+		if(typeof fast === 'undefined'){
+			fast = true;
+		}
+
+		var payments = $('.payments > .payment-list');
+
+		if(!payments.length){
+			$('body > .container').append('<div class="payments">' +
+				'<div class="blockname">Последние покупки</div>' +
+				'<div class="payment-list"></div>' +
+				'</div>');
+
+			payments = $('.payments > .payment-list');
+		}
+
+		payments.find('.payment-id:nth-child(n+5)').remove();
+
+		var e = $('<div class="payment-id window item-id" data-modal="paymodal" data-id="'+data.id+'">' +
+			'<div class="image" style="background-image: url('+data.image+');"></div>' +
+			'<div class="title">'+data.title+'</div>' +
+			'<div class="player">─ '+data.player+'</div>' +
+			'<div class="price" style="display: none;">'+data.price+' <i class="fa fa-ruble col-black"></i></div>' +
+			((data.amount > 1) ? '<div class="amount">x'+data.amount+'</div>' : '') +
+			'<input type="hidden" name="amounted" value="'+data.amounted+'">' +
+			'<input type="hidden" name="item_id" value="'+data.item_id+'">' +
+			'</div>');
+
+		this.last = data.id;
+
+		payments.prepend(e);
+
+		e.fadeIn('fast');
+	},
+
+	getLast: function(){
+
+		var last = this.last;
+
+		qx.load_elements(meta.site_url+'donate/last', {'id':last}, function(data){
+
+			var len = data.items.length;
+
+			if(data.items && len){
+
+				$.each(data.items.reverse(), function(k, v){
+					if(!last){
+						payments.pushLast(v);
+
+						if(len-1 === k){
+							setTimeout(function(){
+								payments.getLast();
+							}, 1000);
+						}
+					}else{
+						setTimeout(function(){
+							payments.pushLast(v);
+
+							if(len-1 === k){
+								setTimeout(function(){
+									payments.getLast();
+								}, 1000);
+							}
+						}, 300*k);
+					}
+				});
+
+			}else{
+				setTimeout(function(){
+					payments.getLast();
+				}, 1000);
+			}
+
+		}, false, function(data){
+			setTimeout(function(){
+				payments.getLast();
+			}, 1000);
+
+			console.log(data);
+		});
+	},
+
+	priceTimeout: undefined,
+
+	getPrice: function(){
+		var form = $('#buyform');
+
+		var button = form.find('[type="submit"]');
+
+		var val = form.find('[name="item_id"]').val();
+
+		if(val === '0' || val === null){
+			button.text('Купить / Доплатить').prop('disabled', false);
+
+			return;
+		}
+
+		button.prop('disabled', true);
+
+		if(typeof payments.timeout !== 'undefined'){ clearTimeout(payments.timeout); }
+
+		payments.timeout = setTimeout(function(){
+			qx.load_elements(meta.site_url+'donate/price', qx.getFormValues(form), function(data){
+				if(!data.type){ button.text('Купить / Доплатить').prop('disabled', false); return qx.notify(data.text); }
+
+				button.html('Купить за '+data.price.toFixed(2)+' <i class="fa fa-ruble col-black"></i>').prop('disabled', false);
+			}, false, function(data){
+				console.log(data);
+
+				button.text('Купить / Доплатить').prop('disabled', false);
+			});
+		}, 500);
+	},
+
+	create: function(buttons){
+
+		buttons.prop('disabled', true);
+
+		var form = $('#buyform');
+
+		qx.load_elements(form.attr('action'), qx.getFormValues(form), function(data){
+			buttons.prop('disabled', false);
+
+			if(!data.type){ return qx.notify(data.text); }
+
+			if(data.method === 'yoomoney' && data.url == ''){
+				$('.modal[data-id="numbermodal"]').trigger('click');
+
+				qx.notify('Платёж успешно создан. Ожидайте прихода сообщения на указанный номер телефона');
+
+			}else{
+				window.location.href = data.url;
+			}
+		}, false, function(data){
+			buttons.prop('disabled', false);
+
+			console.log(data);
+		});
+	}
+};
+
+$(function(){
+
+	setTimeout(function(){
+		payments.getLast();
+	}, 100);
+
+	$('body').on('input', '#buyform input[name="login"], #buyform input[name="amount"], #buyform input[name="promo"]', function(){
+		payments.getPrice();
+	}).on('click', '[data-modal]', function(){
+		if($(this).attr('data-modal') === 'paymodal'){
+			setTimeout(function(){ payments.getPrice(); }, 100);
+		}
+	}).on('click', '#buyform [type="submit"]', function(e){
+		e.preventDefault();
+
+		if(!$('#buyform #login').val().length){
+			qx.notify('Необходимо заполнить никнейм игрока', 'Внимание!');
+		}else{
+			$('.modal[data-id="paymodal"]').fadeOut('fast', function(){
+				$(this).removeClass('active');
+				$('.modal[data-id="methodmodal"]').fadeIn('fast', function(){
+					$(this).addClass('active');
+				});
+			});
+		}
+
+	}).on('click', '#methodform [type="button"]', function(e){
+		e.preventDefault();
+
+		var that = $(this);
+
+		var type = that.attr('data-type');
+
+		$('#buyform [name="method"]').val(type);
+
+		var splitType = type.split('-');
+
+		if(splitType[0] == 'yoomoney' && ['card', 'account'].indexOf(splitType[1]) === -1){
+
+			$('.modal[data-id="numbermodal"]').fadeIn('fast', function(){
+				$(this).addClass('active');
+			});
+		}else{
+			that.addClass('active');
+
+			var buttons = $('#methodform .methods .btn');
+
+			payments.create(buttons);
+		}
+	}).on('click', '#numbermodal [type="submit"]', function(e){
+		e.preventDefault();
+
+		var that = $(this);
+
+		var phone = $('#numbermodal #phone-number').val();
+
+		$('#buyform [name="phone"]').val(phone);
+
+		payments.create(that, true);
+	});
+});

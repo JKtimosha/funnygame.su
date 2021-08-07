@@ -1,0 +1,23 @@
+.static-page .spoiler {
+	border-radius: 2px;
+	background-color: #F0F4C3;
+	padding: 20px;
+	margin-bottom: 20px;
+}
+
+.static-page .spoiler .spoiler-trigger {
+	line-height: 24px;
+	height: 24px;
+	border-radius: 2px;
+	font-weight: normal;
+	padding: 0 12px;
+}
+
+.static-page .spoiler > .spoiler-body {
+	display: none;
+	padding-top: 20px;
+}
+
+.static-page .spoiler.toggle > .spoiler-body {
+	display: block;
+}

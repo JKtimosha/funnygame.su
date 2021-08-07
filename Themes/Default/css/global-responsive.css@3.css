@@ -1,0 +1,158 @@
+@media (min-width: 1200px) {
+	.container {
+		width: 1180px;
+	}
+}
+
+@media (min-width: 992px) and (max-width: 1199px) {
+	.container {
+		width: 972px;
+	}
+
+	.navbar > .girland:after {
+		height: 24px;
+	}
+
+	.navbar > .girland {
+		overflow: hidden;
+	}
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+	.container {
+		width: 748px;
+	}
+
+	.navbar > .girland:after {
+		height: 16px;
+	}
+
+	.navbar > .girland {
+		overflow: hidden;
+	}
+}
+
+@media (max-width: 991px) {
+	.navbar .navbar-mobile {
+		display: block;
+	}
+
+	.navbar > .navbar-wrapper {
+		grid-template-columns: 100%;
+		grid-gap: 0;
+	}
+
+	.navbar > .navbar-wrapper > .block-center,
+	.navbar > .navbar-wrapper > .block-right {
+		display: none;
+	}
+
+	.navbar.active > .navbar-wrapper > .block-center,
+	.navbar.active > .navbar-wrapper > .block-right {
+		display: block;
+	}
+
+	.tabs .tab-links {
+		grid-template-columns: 100%;
+	}
+
+
+	.modal[data-id="donate"] > .wrapper,
+	.modal[data-id="restores"] > .wrapper,
+	.modal[data-id="restores-alert"] > .wrapper{
+		width: 100%;
+	}
+}
+
+@media (max-width: 767px) {
+	.container { width: 100%; }
+
+	.navbar > .girland {
+		overflow: hidden;
+	}
+
+	.navbar > .girland:after,
+	.navbar > .girland:before {
+		display: none;
+	}
+
+	.navbar > .navbar-wrapper > .block-left > ul > li,
+	.navbar > .navbar-wrapper > .block-center > ul > li,
+	.navbar > .navbar-wrapper > .block-right > ul > li {
+		display: block;
+		width: 100%;
+		padding: 0;
+	}
+
+	.navbar > .navbar-wrapper > .block-left > ul > li > a,
+	.navbar > .navbar-wrapper > .block-center > ul > li > a,
+	.navbar > .navbar-wrapper > .block-right > ul > li > a {
+		padding: 20px 0;
+		border: 0;
+		text-align: center;
+	}
+
+	.navbar > .navbar-wrapper > .block-left > ul > li > a:hover,
+	.navbar > .navbar-wrapper > .block-center > ul > li > a:hover,
+	.navbar > .navbar-wrapper > .block-right > ul > li > a:hover,
+	.navbar > .navbar-wrapper > .block-left > ul > li.active > a,
+	.navbar > .navbar-wrapper > .block-center > ul > li.active > a,
+	.navbar > .navbar-wrapper > .block-right > ul > li.active > a {
+		background-color: #2196F3;
+		color: #E3F2FD;
+	}
+
+	.navbar > .navbar-wrapper > .block-left > ul > li > a:hover > .fa,
+	.navbar > .navbar-wrapper > .block-center > ul > li > a:hover > .fa,
+	.navbar > .navbar-wrapper > .block-right > ul > li > a:hover > .fa,
+	.navbar > .navbar-wrapper > .block-left > ul > li.active > a > .fa,
+	.navbar > .navbar-wrapper > .block-center > ul > li.active > a > .fa,
+	.navbar > .navbar-wrapper > .block-right > ul > li.active > a > .fa {
+		color: #1565C0;
+	}
+
+	.navbar > .navbar-wrapper > .block-left > ul > li > a:after,
+	.navbar > .navbar-wrapper > .block-center > ul > li > a:after,
+	.navbar > .navbar-wrapper > .block-right > ul > li > a:after {
+		display: none;
+	}
+
+	.modal > .wrapper {
+		width: 100%;
+	}
+
+	footer > .container {
+		grid-template-columns: 100%;
+		grid-gap: 0;
+		height: auto;
+		padding: 0 20px 20px 20px;
+	}
+
+	footer .developer {
+		position: absolute;
+		z-index: 1;
+		top: 20px;
+		right: 20px;
+	}
+
+	.tabs-alt > .nav-tabs {
+		grid-gap: 20px;
+		display: grid;
+		grid-template-columns: 100%;
+	}
+}
+
+@media (max-width: 479px) {
+	.btn {
+		display: block;
+		width: 100%;
+	}
+
+	.a-alert {
+		width: calc(100% - 40px);
+		left: 20px;
+	}
+}
+
+@media (max-width: 319px) {
+}

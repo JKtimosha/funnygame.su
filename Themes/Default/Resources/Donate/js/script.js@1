@@ -1,0 +1,15 @@
+$(function(){
+	$('body').on('click', '[data-modal="descmodal"]', function(e){
+		e.preventDefault();
+
+		var that = $(this);
+
+		var modal = $('.modal[data-id="descmodal"]');
+
+		var title = that.find('.title').html();
+		var text = that.find('.text').html();
+
+		modal.find('.modal-header').html('О привилегии "'+title+'"');
+		modal.find('.modal-body').html(text);
+	})
+});
